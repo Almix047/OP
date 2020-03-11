@@ -15,23 +15,27 @@ detail = {}
 products_on_page1 = page.xpath("//div[contains(@class, 'schema-product__part schema-product__part_2')]")
 
 products_on_page1.each_with_index do |product, index|
-  # binding.pry if index == 18
-  # binding.pry if product.children[3].children[1].children[1].children[1].text == 'Ноутбук Lenovo IdeaPad S340-14IIL 81VV00CARE'
   puts "#{index + 1}: ---- "
   puts " TITLE: #{detail['Title'] = product.children[3].children[1].children[1].children[1].text}"
   puts " DESCRIPTION: #{detail['Description'] = product.children[3].children[5].children[1].text.gsub(/[\n]/, '').gsub(/[\"]/, ',')}"
   puts " PRODUCT_LINK: #{detail['Product_link'] = product.children[3].children[1].children[1].attributes['href'].text}"
 
   puts " PRICE: #{detail['Price'] = if product.children[1].children[1].children[13].children[3].children[1].nil?
-      puts "!!!HOT: -#{product.children[1].children[1].children[13].children[6].children[1].children[1].children[1].text}%"
+      puts "!!!HOT: -#{detail['Discont'] = product.children[1].children[1].children[13].children[6].children[1].children[1].children[1].text.to_i}%"
       product.children[1].children[1].children[13].children[6].children[1].children[3].children[1].text.gsub(',', '.').to_f
     else
+      detail['Discont'] = 0
       product.children[1].children[1].children[13].children[3].children[1].children[1].text.gsub(',', '.').to_f
     end}"
-  unless product.children[1].children[1].children[19].children[1].nil?
-    puts "!!!USED: #{product.children[1].children[1].children[19].children[1].children[1].children[1].text}"
-    puts " #{product.children[1].children[1].children[19].children[1].children[1].attributes['href'].value}"
-  end
+
+  detail['Second-hand_price'] = if product.children[1].children[1].children[19].children[1].nil?
+      detail['Second-hand_link'] = 'no item'
+      'no item'
+    else
+      puts "!!!USED: #{product.children[1].children[1].children[19].children[1].children[1].children[1].text}"
+      puts "#{detail['Second-hand_link'] = product.children[1].children[1].children[19].children[1].children[1].attributes['href'].value}"
+      product.children[1].children[1].children[19].children[1].children[1].children[1].text
+    end
 
   puts " OFFER: #{detail['Trading_offers'] = product.children[1].children[1].children[13].children[10].children[1].children.text.to_i}"
   puts " OFFER_LINK: #{detail['Trading_offers_link'] = product.children[1].children[1].children[13].children[10].children[1].values[3]}"
