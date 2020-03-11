@@ -9,8 +9,7 @@ URL =  Dir['../cache/*.html'][1]
 
 page = Nokogiri::HTML(open(URL))
 
-products_arr = []
-product_arr = []
+products = []
 detail = {}
 
 products_on_page1 = page.xpath("//div[contains(@class, 'schema-product__part schema-product__part_2')]")
@@ -23,12 +22,12 @@ products_on_page1.each_with_index do |product, index|
   puts " DESCRIPTION: #{detail['Description'] = product.children[3].children[5].children[1].text.gsub(/[\n]/, '').gsub(/[\"]/, ',')}"
   puts " PRODUCT_LINK: #{detail['Product_link'] = product.children[3].children[1].children[1].attributes['href'].text}"
 
-  detail['Price'] = if product.children[1].children[1].children[13].children[3].children[1].nil?
+  puts " PRICE: #{detail['Price'] = if product.children[1].children[1].children[13].children[3].children[1].nil?
       puts "!!!HOT: -#{product.children[1].children[1].children[13].children[6].children[1].children[1].children[1].text}%"
-      puts " PRICE: #{product.children[1].children[1].children[13].children[6].children[1].children[3].children[1].text.gsub(',', '.').to_f}"
+      product.children[1].children[1].children[13].children[6].children[1].children[3].children[1].text.gsub(',', '.').to_f
     else
-      puts " PRICE: #{product.children[1].children[1].children[13].children[3].children[1].children[1].text.gsub(',', '.').to_f}"
-    end
+      product.children[1].children[1].children[13].children[3].children[1].children[1].text.gsub(',', '.').to_f
+    end}"
   unless product.children[1].children[1].children[19].children[1].nil?
     puts "!!!USED: #{product.children[1].children[1].children[19].children[1].children[1].children[1].text}"
     puts " #{product.children[1].children[1].children[19].children[1].children[1].attributes['href'].value}"
@@ -37,24 +36,25 @@ products_on_page1.each_with_index do |product, index|
   puts " OFFER: #{detail['Trading_offers'] = product.children[1].children[1].children[13].children[10].children[1].children.text.to_i}"
   puts " OFFER_LINK: #{detail['Trading_offers_link'] = product.children[1].children[1].children[13].children[10].children[1].values[3]}"
 
-  detail['Reviews'] = if product.children[3].children[7].children[1].children[3].children[3].nil?
-      puts " REVIEWS: #{0}"
+  puts " REVIEWS: #{detail['Reviews'] = if product.children[3].children[7].children[1].children[3].children[3].nil?
+      0
     else
-      puts " REVIEWS: #{product.children[3].children[7].children[1].children[3].children[3].children[1].text.to_i}"
-    end
+      product.children[3].children[7].children[1].children[3].children[3].children[1].text.to_i
+    end}"
   puts " REVIEWS/RATED_LINK: #{detail['Reviews_link'] = product.children[3].children[7].children[1].children[3].values.last}"
 
   puts " DISCUSSION: #{detail['Discussion'] = product.children[3].children[7].children[3].children[12].text.to_i}"
-  detail['Discussion_link'] =  if product.children[3].children[7].children[3].children[3].attributes['href'].nil?
-      puts " DISCUSSION_LINK: #{"discussion didn't start"}"
+  puts " DISCUSSION_LINK: #{detail['Discussion_link'] =  if product.children[3].children[7].children[3].children[3].attributes['href'].nil?
+      "discussion didn't start"
     else
-      puts " DISCUSSION_LINK: #{product.children[3].children[7].children[3].children[3].attributes['href'].value}"
-    end
+      product.children[3].children[7].children[3].children[3].attributes['href'].value
+    end}"
 
-  detail['Rated'] = if product.children[3].children[7].children[1].children[3].children[1].nil?
-    puts " RATED: #{"not rated yet"}"
+  puts " RATED: #{detail['Rated'] = if product.children[3].children[7].children[1].children[3].children[1].nil?
+    'not rated yet'
   else
-    puts " RATED: #{product.children[3].children[7].children[1].children[3].children[1].attributes['class'].value.gsub(/['rating rating_']/, '').to_f/10}"
-  end
-  # product_arr.push(detail)
+    product.children[3].children[7].children[1].children[3].children[1].attributes['class'].value.gsub(/['rating rating_']/, '').to_f/10
+  end}"
+  # binding.pry
+  products.push(detail)
 end
