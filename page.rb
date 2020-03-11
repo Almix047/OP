@@ -8,7 +8,9 @@ class Page
     # parser.fetch_page.xpath(path).map { |link| PetProduct.new(link.text) }
   end
 
-  # def self.neighboring_pages
-
-  # end
+  def self.products_count(page)
+    path = "//span[contains(@class, 'schema-filter-button__sub schema-filter-button__sub_main')]"
+    text = page.fetch_page.xpath(path).text
+    (text.gsub(/[\D]/, '').to_f / 30).ceil - 1
+  end
 end

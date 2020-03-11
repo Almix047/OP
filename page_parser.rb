@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# require 'selenium-webdriver'
-require 'open-uri'
+require 'selenium-webdriver'
 require 'nokogiri'
 
 # Scraping information from site
@@ -19,6 +18,8 @@ class PageParser
   private
 
   def parse_page(link)
-    Nokogiri::HTML(open(link))
+    DRIVER.navigate.to link
+    sleep(5)
+    Nokogiri::HTML(DRIVER.page_source)
   end
 end
