@@ -17,55 +17,44 @@ products_on_page1 = page.xpath("//div[contains(@class, 'schema-product__part sch
 
 products_on_page1.each_with_index do |product, index|
   # binding.pry if index == 18
-  # binding.pry if product.children[3].children[1].children[1].children[1].text == 'Ноутбук ASUS X509FL-BQ321'
-  puts detail['Title'] = product.children[3].children[1].children[1].children[1].text
-  puts detail['Description'] = product.children[3].children[5].children[1].text.gsub(/[\n]/, '').gsub(/[\"]/, ',')
-  puts detail['Product_link'] = product.children[3].children[1].children[1].attributes['href'].text
+  # binding.pry if product.children[3].children[1].children[1].children[1].text == 'Ноутбук Lenovo IdeaPad S340-14IIL 81VV00CARE'
+  puts "#{index + 1}: ---- "
+  puts " TITLE: #{detail['Title'] = product.children[3].children[1].children[1].children[1].text}"
+  puts " DESCRIPTION: #{detail['Description'] = product.children[3].children[5].children[1].text.gsub(/[\n]/, '').gsub(/[\"]/, ',')}"
+  puts " PRODUCT_LINK: #{detail['Product_link'] = product.children[3].children[1].children[1].attributes['href'].text}"
 
-  puts detail['Price'] = if product.children[1].children[1].children[13].children[3].children[1].nil?
+  detail['Price'] = if product.children[1].children[1].children[13].children[3].children[1].nil?
       puts "!!!HOT: -#{product.children[1].children[1].children[13].children[6].children[1].children[1].children[1].text}%"
-      product.children[1].children[1].children[13].children[6].children[1].children[3].children[1].text.gsub(',', '.').to_f
+      puts " PRICE: #{product.children[1].children[1].children[13].children[6].children[1].children[3].children[1].text.gsub(',', '.').to_f}"
     else
-      product.children[1].children[1].children[13].children[3].children[1].children[1].text.gsub(',', '.').to_f
+      puts " PRICE: #{product.children[1].children[1].children[13].children[3].children[1].children[1].text.gsub(',', '.').to_f}"
     end
   unless product.children[1].children[1].children[19].children[1].nil?
     puts "!!!USED: #{product.children[1].children[1].children[19].children[1].children[1].children[1].text}"
-    puts product.children[1].children[1].children[19].children[1].children[1].attributes['href'].value
+    puts " #{product.children[1].children[1].children[19].children[1].children[1].attributes['href'].value}"
   end
 
-  puts detail['Trading_offers'] = product.children[1].children[1].children[13].children[10].children[1].children.text
-    # binding.pry
-  # puts detail['Trading_offers_link'] = products_on_page1.first.children[1].children[1].children[13].children[10].children[1].values[3] #wrong aways
-  puts "#{index + 1}: ---- "
+  puts " OFFER: #{detail['Trading_offers'] = product.children[1].children[1].children[13].children[10].children[1].children.text.to_i}"
+  puts " OFFER_LINK: #{detail['Trading_offers_link'] = product.children[1].children[1].children[13].children[10].children[1].values[3]}"
 
-  # detail['Reviews'] = product
-  # detail['Reviews_link'] = product
+  detail['Reviews'] = if product.children[3].children[7].children[1].children[3].children[3].nil?
+      puts " REVIEWS: #{0}"
+    else
+      puts " REVIEWS: #{product.children[3].children[7].children[1].children[3].children[3].children[1].text.to_i}"
+    end
+  puts " REVIEWS/RATED_LINK: #{detail['Reviews_link'] = product.children[3].children[7].children[1].children[3].values.last}"
 
-  # detail['Discussion'] = product
-  # detail['Discussion_link'] = product
+  puts " DISCUSSION: #{detail['Discussion'] = product.children[3].children[7].children[3].children[12].text.to_i}"
+  detail['Discussion_link'] =  if product.children[3].children[7].children[3].children[3].attributes['href'].nil?
+      puts " DISCUSSION_LINK: #{"discussion didn't start"}"
+    else
+      puts " DISCUSSION_LINK: #{product.children[3].children[7].children[3].children[3].attributes['href'].value}"
+    end
 
-  # detail['Rated'] = product[5].children[3].children[7].children[1].children[3].children[1].attributes['class'].value.reverse.to_i.to_s.reverse.to_f/10
-
+  detail['Rated'] = if product.children[3].children[7].children[1].children[3].children[1].nil?
+    puts " RATED: #{"not rated yet"}"
+  else
+    puts " RATED: #{product.children[3].children[7].children[1].children[3].children[1].attributes['class'].value.gsub(/['rating rating_']/, '').to_f/10}"
+  end
   # product_arr.push(detail)
 end
-
-# # Отзывы (Reviews/Rated) link
-
-# products_on_page1.first.children[3].children[7].children[1].children[3].values.last
-
-# # Отзывы ( reviews) if have
-
-# products_on_page1.first.children[3].children[7].children[1].children[3].children[3].children[1].text
-
-# # If haven’t
-# products_on_page1[6].children[3].children[7].children[1].children[6].text
-
-# # If have discuss
-# products_on_page1[5].children[3].children[7].children[3].children[12].text
-
-# # if haven’t discuss
-# products_on_page1[0].children[3].children[7].children[3].children[6].text
-
-# XPath links
-
-# https://www.guru99.com/using-contains-sbiling-ancestor-to-find-element-in-selenium.html
