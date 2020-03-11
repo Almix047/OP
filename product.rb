@@ -8,7 +8,7 @@ class Product
     @product = product
   end
 
-  def title
+  def name
     product.children[3].children[1].children[1].children[1].text
   end
 
@@ -62,7 +62,7 @@ class Product
 
   def reviews
     if product.children[3].children[7].children[1].children[3].children[3].nil?
-     ws
+     0
     else
       product.children[3].children[7].children[1].children[3].children[3].children[1].text.to_i
     end
