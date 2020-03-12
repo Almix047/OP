@@ -24,7 +24,7 @@ class OutputList
   private
 
   def prepare_list_data
-    products.each_with_index do |product, index|
+    products.flatten.each_with_index do |product, index|
       row = [
         product.name, product.description, product.price, product.link,
         product.offers, product.discont, product.offers_link,

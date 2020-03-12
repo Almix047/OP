@@ -3,3 +3,5 @@
 .ruby-gemset
 .DS_Store
 *.csv
+# To ingnore file same as .~lock.result.csv#
+*.csv*

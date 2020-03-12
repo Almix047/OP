@@ -10,9 +10,10 @@ require 'csv'
 class RecordToFile
   def self.save_as_csv_file
     current_page = PageParser.new(URL)
-    num_products = Page.products_count(current_page)
-    products_on_page = Page.links_on_page(current_page)
-    products = products_on_page.map { |product| Product.new(product) }
+    products_from_current_page = Page.links_on_page(current_page)
+    pages_links_arr = Page.products_count(current_page)
+    pages_products = pages_links_arr.map { |page| Page.links_on_page(PageParser.new(page)) }.unshift(products_from_current_page)
+    products = pages_products.map { |page| page.map { |product| Product.new(product) } }
     rows = OutputList.new(products).call
 
     # Return if no items to parse are found.

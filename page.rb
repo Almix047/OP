@@ -11,6 +11,10 @@ class Page
   def self.products_count(page)
     path = "//span[contains(@class, 'schema-filter-button__sub schema-filter-button__sub_main')]"
     text = page.fetch_page.xpath(path).text
-    (text.gsub(/[\D]/, '').to_f / 30).ceil - 1
+    arr = []
+    ((text.gsub(/[\D]/, '').to_f / 30).ceil - 1).times do |el|
+      arr.push(URL + '&page=' + (el + 2).to_s)
+    end
+    arr
   end
 end
