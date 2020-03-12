@@ -19,7 +19,15 @@ class PageParser
 
   def parse_page(link)
     DRIVER.navigate.to link
-    sleep(5)
+    timeout
     Nokogiri::HTML(DRIVER.page_source)
+  end
+
+  def timeout
+    seconds = rand(5..15)
+    seconds.times do |curr_sec|
+      puts seconds - curr_sec
+      sleep(1)
+    end
   end
 end
