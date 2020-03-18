@@ -74,7 +74,7 @@ class Product
 
   def reviews
     if product.children[3].children[7].children[1].children[3].children[3].nil?
-     0
+      0
     else
       product.children[3].children[7].children[1].children[3].children[3].children[1].text.to_i
     end
@@ -84,7 +84,7 @@ class Product
     if product.children[3].children[7].children[1].children[3].children[1].nil?
       'not rated yet'
     else
-      product.children[3].children[7].children[1].children[3].children[1].attributes['class'].value.gsub(/['rating rating_']/, '').to_f/10
+      product.children[3].children[7].children[1].children[3].children[1].attributes['class'].value.gsub(/['rating rating_']/, '').to_f / 10
     end
   end
 
