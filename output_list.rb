@@ -11,6 +11,11 @@ class OutputList
   # Name Diagonal Screen CPU RAM Storage Video System Price Discont
   # Reviews Discussion Rated Second_Hand_Price Color Link Offers
 
+  # Need fixed in Product class for 'Out of stock' or 'Soon in sale' state:
+  # discount,
+  # second hand,
+  #offers.
+
   attr_reader :products
 
   def initialize(products)
