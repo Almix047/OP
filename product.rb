@@ -21,10 +21,22 @@ class Product
   end
 
   def price
-    if product.children[1].children[1].children[13].children[3].children[1].nil?
-      product.children[1].children[1].children[13].children[6].children[1].children[3].children[1].text.gsub(',', '.').to_f
+    if product.children[1].children[1].children[13].nil?
+      # Soon in sale
+      product.children[1].children[1].children[6].children[1].text
     else
-      product.children[1].children[1].children[13].children[3].children[1].children[1].text.gsub(',', '.').to_f
+      # Regular price; Out of stock
+      if product.children[1].children[1].children[13].children[3].nil?
+        # Out of stock
+        product.children[1].children[1].children[16].children[1].text
+      else
+        # Second hand price; Regular price
+        if product.children[1].children[1].children[13].children[3].children[1].nil?
+          product.children[1].children[1].children[13].children[6].children[1].children[3].children[1].text.gsub(',', '.').to_f
+        else
+          product.children[1].children[1].children[13].children[3].children[1].children[1].text.gsub(',', '.').to_f
+        end
+      end
     end
   end
 
